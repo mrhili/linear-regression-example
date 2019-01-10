@@ -37,12 +37,12 @@ forecast_col = 'Adj. Close'
 #Replacing the nan data !important
 df.fillna(-99999, inplace=True)
 
-forecast_out = math.ceil( 0.01 * len(  df   )    )
+forecast_out = math.ceil( 0.1 * len(  df   )    )
 
 df['label'] = df[ forecast_col ].shift( - forecast_out )
 
 
-X = np.array( df.drop(['label'], 1) )
+X = np.array( df.drop(['label','Adj. Close'], 1) )
 
 
 X = preprocessing.scale( X )
@@ -61,10 +61,11 @@ X_train , X_test, y_train, y_test = model_selection.train_test_split(X,y, test_s
 
 
 #ONCE A MONTH
-'''
+
 clf = LinearRegression(n_jobs=-1)
 #another algo for machine learning
 #clf = svm.SVR()
+'''
 clf.fit( X_train , y_train )
 
 with open('linearregression.pickle', 'wb') as f:
